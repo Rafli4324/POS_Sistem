@@ -2,9 +2,11 @@
     "version": 2,
     "builds": [
         { "src": "/api/index.php", "use": "vercel-php@0.6.0" },
+        { "src": "/api/python_api.py", "use": "@vercel/python" },
         { "src": "/public/**", "use": "@vercel/static" }
     ],
     "routes": [
+        { "src": "/api/python/(.*)", "dest": "/api/python_api.py" },
         { "src": "/(.*)", "dest": "/api/index.php" }
     ]
 }

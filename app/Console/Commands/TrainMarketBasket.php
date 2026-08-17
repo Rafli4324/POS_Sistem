@@ -3,43 +3,31 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\Http;
 
 class TrainMarketBasket extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'pos:train-market-basket';
+    protected $description = 'Melatih algoritma FP-Growth untuk rekomendasi cross-selling via Serverless API';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Melatih algoritma FP-Growth untuk rekomendasi cross-selling';
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        $this->info('Memulai proses training FP-Growth...');
+        $this->info('Memulai proses training FP-Growth via API...');
         
-        $scriptPath = storage_path('app/scripts/fpgrowth_trainer.py');
-        
-        $process = new Process(['python', $scriptPath]);
-        $process->setTimeout(300); // 5 menit
+        $apiUrl = env('PYTHON_API_URL', url('/api/python')) . '/train';
         
         try {
-            $process->mustRun();
-            $this->info('Berhasil:');
-            $this->line($process->getOutput());
-        } catch (ProcessFailedException $exception) {
-            $this->error('Gagal menjalankan training AI:');
+            $response = Http::timeout(300)->post($apiUrl);
+            
+            if ($response->successful()) {
+                $this->info('Berhasil:');
+                $this->line(json_encode($response->json(), JSON_PRETTY_PRINT));
+            } else {
+                $this->error('Gagal menjalankan training AI. Status: ' . $response->status());
+                $this->error($response->body());
+            }
+        } catch (\Exception $exception) {
+            $this->error('Gagal menghubungi API:');
             $this->error($exception->getMessage());
         }
     }

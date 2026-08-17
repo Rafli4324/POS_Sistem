@@ -131,28 +131,24 @@ class ForecastController extends Controller
         ]);
 
         $file = $request->file('excel_file');
-        $filename = 'upload_' . time() . '.' . $file->getClientOriginalExtension();
-        $file->move(storage_path('app/temp'), $filename);
-        $fullPath = storage_path('app/temp/' . $filename);
-
-        $scriptPath = base_path('sma_from_excel.py');
-        $escapedPath = escapeshellarg($fullPath);
+        $apiUrl = env('PYTHON_API_URL', url('/api/python')) . '/predict';
         
-        $command = "python \"$scriptPath\" $escapedPath";
-        $output = shell_exec($command);
-        
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
-        
-        if (!$output) {
-            return back()->with('error', 'Gagal mengeksekusi script Python pembaca Excel.');
-        }
-
-        $result = json_decode($output, true);
-        
-        if (!$result || isset($result['error'])) {
-            return back()->with('error', 'Error dari script pembaca: ' . ($result['error'] ?? 'Unknown error'));
+        try {
+            $response = \Illuminate\Support\Facades\Http::attach(
+                'excel_file', file_get_contents($file), $file->getClientOriginalName()
+            )->post($apiUrl);
+            
+            if (!$response->successful()) {
+                return back()->with('error', 'Gagal menghubungi API Python: ' . $response->body());
+            }
+            
+            $result = $response->json();
+            
+            if (!$result || isset($result['error'])) {
+                return back()->with('error', 'Error dari script pembaca: ' . ($result['error'] ?? 'Unknown error'));
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghubungi API Python: ' . $e->getMessage());
         }
 
         $augmentedPredictions = [];
