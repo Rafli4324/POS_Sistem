@@ -1,12 +1,27 @@
 {
     "version": 2,
     "builds": [
-        { "src": "/api/index.php", "use": "vercel-php@0.7.2" },
-        { "src": "/api/python_api.py", "use": "@vercel/python" },
-        { "src": "/public/**", "use": "@vercel/static" }
+        {
+            "src": "api/index.php",
+            "use": "vercel-php@0.9.0"
+        },
+        {
+            "src": "api/python_api.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
     ],
     "routes": [
-        { "src": "/api/python/(.*)", "dest": "/api/python_api.py" },
-        { "src": "/(.*)", "dest": "/api/index.php" }
+        {
+            "src": "/api/python/(.*)",
+            "dest": "api/python_api.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "api/index.php"
+        }
     ]
 }
