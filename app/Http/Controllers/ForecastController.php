@@ -31,6 +31,8 @@ class ForecastController extends Controller
 
     public function generate()
     {
+        set_time_limit(300);
+    ini_set('max_execution_time', 300);
         $menus = Menu::all();
         $targetDate = Carbon::tomorrow();
         $n_days = 7; // Menggunakan 7 hari untuk SMA
