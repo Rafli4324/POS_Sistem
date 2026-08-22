@@ -14,7 +14,7 @@ class ReportController extends Controller
     {
         $totalRevenue = Sale::sum('total_harga');
         
-        $startDate = Carbon::now()->subDays(13)->startOfDay();
+        $startDate = Carbon::now()->subDays(29)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
         
         $sales = Sale::whereBetween('tanggal_transaksi', [$startDate, $endDate])

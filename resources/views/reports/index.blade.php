@@ -24,18 +24,18 @@
             <p class="text-3xl font-bold text-gray-900">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</p>
         </div>
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-center">
-            <h3 class="text-sm font-medium text-gray-500 mb-1">Total Transaksi (14 Hari)</h3>
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Total Transaksi (30 Hari)</h3>
             <p class="text-3xl font-bold text-indigo-600">{{ array_sum($data) > 0 ? count(array_filter($data, fn($v) => $v > 0)) . ' Hari Aktif' : 'Belum Ada' }}</p>
         </div>
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-center">
-            <h3 class="text-sm font-medium text-gray-500 mb-1">Rata-rata Harian (14 Hari)</h3>
-            <p class="text-3xl font-bold text-emerald-600">Rp {{ number_format(array_sum($data) / 14, 0, ',', '.') }}</p>
+            <h3 class="text-sm font-medium text-gray-500 mb-1">Rata-rata Harian (30 Hari)</h3>
+            <p class="text-3xl font-bold text-emerald-600">Rp {{ number_format(array_sum($data) / 30, 0, ',', '.') }}</p>
         </div>
     </div>
 
     <!-- Chart -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Tren Penjualan 14 Hari Terakhir</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Tren Penjualan 30 Hari Terakhir</h3>
         <div class="h-80 w-full relative">
             <canvas id="salesChart"></canvas>
         </div>
