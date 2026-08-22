@@ -24,7 +24,7 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-500">Orders Today</p>
+                <p class="text-sm font-medium text-gray-500">Items Sold Today</p>
                 <p class="text-2xl font-bold text-gray-900">{{ $ordersToday ?? 0 }}</p>
             </div>
         </div>

@@ -17,7 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $today = \Carbon\Carbon::today();
         $totalSalesToday = \App\Models\Sale::whereDate('tanggal_transaksi', $today)->sum('total_harga');
-        $ordersToday = \App\Models\Sale::whereDate('tanggal_transaksi', $today)->count();
+        
+        $ordersToday = \App\Models\SaleDetail::whereHas('sale', function($q) use ($today) {
+            $q->whereDate('tanggal_transaksi', $today);
+        })->sum('jumlah_beli');
+        
         $lowStockItems = \App\Models\Menu::where('stok_saat_ini', '<=', 5)->count();
         
         return view('dashboard', compact('totalSalesToday', 'ordersToday', 'lowStockItems'));
