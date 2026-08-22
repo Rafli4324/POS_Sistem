@@ -15,7 +15,7 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500">Total Sales Today</p>
-                <p class="text-2xl font-bold text-gray-900">Rp 0</p>
+                <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($totalSalesToday ?? 0, 0, ',', '.') }}</p>
             </div>
         </div>
         
@@ -25,7 +25,7 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500">Orders Today</p>
-                <p class="text-2xl font-bold text-gray-900">0</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $ordersToday ?? 0 }}</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             </div>
             <div>
                 <p class="text-sm font-medium text-gray-500">Low Stock Items</p>
-                <p class="text-2xl font-bold text-gray-900">0</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $lowStockItems ?? 0 }}</p>
             </div>
         </div>
     </div>

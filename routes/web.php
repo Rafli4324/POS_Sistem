@@ -15,7 +15,12 @@ use App\Http\Controllers\MenuController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $today = \Carbon\Carbon::today();
+        $totalSalesToday = \App\Models\Sale::whereDate('tanggal_transaksi', $today)->sum('total_harga');
+        $ordersToday = \App\Models\Sale::whereDate('tanggal_transaksi', $today)->count();
+        $lowStockItems = \App\Models\Menu::where('stok_saat_ini', '<=', 5)->count();
+        
+        return view('dashboard', compact('totalSalesToday', 'ordersToday', 'lowStockItems'));
     })->name('dashboard');
 
     Route::resource('menus', MenuController::class);
