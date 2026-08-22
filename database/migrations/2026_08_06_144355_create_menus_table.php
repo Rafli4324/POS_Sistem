@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_menu');
-            $table->string('kategori', 100);
+            $table->string('nama_menu', 100);
+            $table->string('kategori', 50);
             $table->decimal('harga', 10, 2);
             $table->integer('stok_saat_ini')->default(0);
             $table->timestamps();
